@@ -39,19 +39,6 @@ modules:
       - install -Dm644 io.github.matthewpchapdelaine.ubi-system.svg /app/share/icons/hicolor/scalable/apps/io.github.matthewpchapdelaine.ubi-system.svg
       - install -Dm644 LICENSE /app/share/licenses/${FLATPAK_ID}/ubi-system/LICENSE
     sources:
-      - type: archive
-        url: https://github.com/MatthewPChapdelaine/UBI-System/archive/refs/tags/v0.1.0.tar.gz
-        sha256: 6f20bf9e7f454a254fff993c06dfe6db03389e57afd52fb236819f55ad3924f2
-        strip-components: 1
-      - type: file
-        path: ../../LICENSE
-      - type: file
-        path: NuGet.Config
-      - type: file
-        path: ubi-native-host.py
-      - type: file
-        path: io.github.matthewpchapdelaine.ubi-system.desktop
-      - type: file
-        path: io.github.matthewpchapdelaine.ubi-system.metainfo.xml
-      - type: file
-        path: io.github.matthewpchapdelaine.ubi-system.svg
+      - type: git
+        url: https://github.com/MatthewPChapdelaine/UBI-System.git
+        tag: v0.1.1
