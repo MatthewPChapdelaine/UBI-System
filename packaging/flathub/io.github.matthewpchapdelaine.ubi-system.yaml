@@ -29,14 +29,14 @@ modules:
   - name: ubi-system
     buildsystem: simple
     build-commands:
-      - /usr/lib/sdk/dotnet8/bin/dotnet restore src/UBI.App/UBI.App.csproj --configfile NuGet.Config --source /usr/lib/sdk/dotnet8/nuget/packages
-      - /usr/lib/sdk/dotnet8/bin/dotnet publish src/UBI.App/UBI.App.csproj -c Release --no-restore --configfile NuGet.Config --source /usr/lib/sdk/dotnet8/nuget/packages -o publish --no-self-contained
+      - /usr/lib/sdk/dotnet8/bin/dotnet restore src/UBI.App/UBI.App.csproj --configfile packaging/flathub/NuGet.Config --source /usr/lib/sdk/dotnet8/nuget/packages
+      - /usr/lib/sdk/dotnet8/bin/dotnet publish src/UBI.App/UBI.App.csproj -c Release --no-restore --configfile packaging/flathub/NuGet.Config --source /usr/lib/sdk/dotnet8/nuget/packages -o publish --no-self-contained
       - install -d /app/bin /app/share/ubi-app /app/share/applications /app/share/metainfo /app/share/icons/hicolor/scalable/apps /app/share/licenses/${FLATPAK_ID}/ubi-system
       - cp -a publish/. /app/share/ubi-app/
-      - install -Dm755 ubi-native-host.py /app/bin/ubi-native-host
-      - install -Dm644 io.github.matthewpchapdelaine.ubi-system.desktop /app/share/applications/io.github.matthewpchapdelaine.ubi-system.desktop
-      - install -Dm644 io.github.matthewpchapdelaine.ubi-system.metainfo.xml /app/share/metainfo/io.github.matthewpchapdelaine.ubi-system.metainfo.xml
-      - install -Dm644 io.github.matthewpchapdelaine.ubi-system.svg /app/share/icons/hicolor/scalable/apps/io.github.matthewpchapdelaine.ubi-system.svg
+      - install -Dm755 packaging/flathub/ubi-native-host.py /app/bin/ubi-native-host
+      - install -Dm644 packaging/flathub/io.github.matthewpchapdelaine.ubi-system.desktop /app/share/applications/io.github.matthewpchapdelaine.ubi-system.desktop
+      - install -Dm644 packaging/flathub/io.github.matthewpchapdelaine.ubi-system.metainfo.xml /app/share/metainfo/io.github.matthewpchapdelaine.ubi-system.metainfo.xml
+      - install -Dm644 packaging/flathub/io.github.matthewpchapdelaine.ubi-system.svg /app/share/icons/hicolor/scalable/apps/io.github.matthewpchapdelaine.ubi-system.svg
       - install -Dm644 LICENSE /app/share/licenses/${FLATPAK_ID}/ubi-system/LICENSE
     sources:
       - type: git
