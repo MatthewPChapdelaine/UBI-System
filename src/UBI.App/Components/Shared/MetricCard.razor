@@ -1,0 +1,29 @@
+<section class="metric-card tone-@Tone">
+    <div class="metric-card__eyebrow">@Eyebrow</div>
+    <div class="metric-card__value">@Value</div>
+
+    @if (!string.IsNullOrWhiteSpace(Trend))
+    {
+        <div class="metric-card__trend">@Trend</div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Description))
+    {
+        <p class="metric-card__description">@Description</p>
+    }
+    else if (ChildContent is not null)
+    {
+        <div class="metric-card__description">
+            @ChildContent
+        </div>
+    }
+</section>
+
+@code {
+    [Parameter, EditorRequired] public string Eyebrow { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string Value { get; set; } = string.Empty;
+    [Parameter] public string Trend { get; set; } = string.Empty;
+    [Parameter] public string Description { get; set; } = string.Empty;
+    [Parameter] public string Tone { get; set; } = "neutral";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

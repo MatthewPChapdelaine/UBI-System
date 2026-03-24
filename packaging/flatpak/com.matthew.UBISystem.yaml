@@ -1,0 +1,31 @@
+app-id: com.matthew.UBISystem
+runtime: org.gnome.Platform
+runtime-version: "49"
+sdk: org.gnome.Sdk
+command: ubi-native-host
+finish-args:
+  - --share=network
+  - --share=ipc
+  - --socket=fallback-x11
+  - --socket=wayland
+modules:
+  - name: ubi-system
+    buildsystem: simple
+    build-commands:
+      - install -d /app/bin /app/share/ubi-app /app/share/applications /app/share/metainfo /app/share/icons/hicolor/scalable/apps
+      - cp -r ./. /app/share/ubi-app/
+      - install -Dm755 ubi-native-host.py /app/bin/ubi-native-host
+      - install -Dm644 com.matthew.UBISystem.desktop /app/share/applications/com.matthew.UBISystem.desktop
+      - install -Dm644 com.matthew.UBISystem.metainfo.xml /app/share/metainfo/com.matthew.UBISystem.metainfo.xml
+      - install -Dm644 com.matthew.UBISystem.svg /app/share/icons/hicolor/scalable/apps/com.matthew.UBISystem.svg
+    sources:
+      - type: dir
+        path: publish
+      - type: file
+        path: ubi-native-host.py
+      - type: file
+        path: com.matthew.UBISystem.desktop
+      - type: file
+        path: com.matthew.UBISystem.metainfo.xml
+      - type: file
+        path: com.matthew.UBISystem.svg

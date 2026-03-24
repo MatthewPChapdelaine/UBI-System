@@ -1,0 +1,6 @@
+.flatpak-builder/
+flatpak-build/
+packaging/flatpak/.flatpak-builder/
+packaging/flatpak/publish/
+packaging/flatpak/__pycache__/
+packaging/flatpak/screenshots/*.log

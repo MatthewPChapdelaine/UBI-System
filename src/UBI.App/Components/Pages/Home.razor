@@ -1,0 +1,90 @@
+@page "/"
+@inject UbiDataService Data
+
+<PageTitle>UBI Overview</PageTitle>
+
+@{
+    var workspace = Data.Workspace;
+    var activeEmployeesValue = workspace.ActiveEmployees.ToString();
+    var monthlyFlowValue = workspace.MonthlyFlow.ToString("C0");
+    var openInterventionsValue = workspace.OpenInterventions.ToString();
+}
+
+<section class="hero-panel">
+    <div>
+        <p class="hero-panel__eyebrow">Managed UBI System</p>
+        <h1>Solid software for purpose-driven compensation, transparency, and support</h1>
+        <p class="hero-panel__summary">
+            This first release turns the design docs into a real application shell for
+            <strong>@workspace.CompanyName</strong>. It focuses on the three UI promises
+            the spec emphasizes most: employee estate visibility, presence awareness, and
+            leadership-level organizational health, backed by persisted local workflow data.
+        </p>
+    </div>
+
+    <div class="hero-panel__actions">
+        <a class="app-button app-button--primary" href="operations">Run operations workflows</a>
+        <a class="app-button" href="leadership">Review leadership dashboard</a>
+    </div>
+</section>
+
+<div class="metric-grid">
+    <MetricCard Eyebrow="Readiness" Value="@workspace.Readiness" Trend="Local persistence live" Description="The app now saves workflow changes and exposes HTTP endpoints for future integrations." Tone="blue" />
+    <MetricCard Eyebrow="Active employees" Value="@activeEmployeesValue" Trend="Live roster target" Description="The app shell is optimized around a modest but growing organization size." Tone="green" />
+    <MetricCard Eyebrow="Monthly managed flow" Value="@monthlyFlowValue" Trend="Per-employee snapshot" Description="The financial UI starts with real-time balance, contributions, and projection storytelling." Tone="gold" />
+    <MetricCard Eyebrow="Open interventions" Value="@openInterventionsValue" Trend="Human follow-ups" Description="Leadership screens surface support work without burying signal quality." Tone="purple" />
+</div>
+
+<div class="overview-grid">
+    <SectionCard Title="Product pillars" Kicker="Experience design" Subtitle="@workspace.Tagline">
+        <div class="pillar-grid">
+            @foreach (var pillar in workspace.ExperiencePillars)
+            {
+                <article class="info-tile tone-@pillar.Tone">
+                    <h3>@pillar.Title</h3>
+                    <p>@pillar.Description</p>
+                </article>
+            }
+        </div>
+    </SectionCard>
+
+    <SectionCard Title="Recent platform activity" Kicker="Timeline" Subtitle="Representative events from the design spec made visible as operational UI">
+        <div class="activity-list">
+            @foreach (var item in workspace.RecentActivity)
+            {
+                <article class="activity-item tone-@item.Tone">
+                    <div class="activity-item__date">@item.DateLabel</div>
+                    <div>
+                        <h3>@item.Title</h3>
+                        <p>@item.Description</p>
+                    </div>
+                </article>
+            }
+        </div>
+    </SectionCard>
+
+    <SectionCard Title="Core workflows" Kicker="Operational map" Subtitle="The first GUI architecture is organized around these foundational jobs">
+        <div class="workflow-grid">
+            @foreach (var stage in workspace.WorkflowStages)
+            {
+                <article class="workflow-card">
+                    <div class="workflow-card__status">@stage.Status</div>
+                    <h3>@stage.Title</h3>
+                    <p>@stage.Description</p>
+                </article>
+            }
+        </div>
+    </SectionCard>
+
+    <SectionCard Title="Safety guardrails" Kicker="Governance" Subtitle="These are the non-negotiable constraints the GUI should continue to protect">
+        <div class="guardrail-list">
+            @foreach (var guardrail in workspace.Guardrails)
+            {
+                <article class="guardrail-item">
+                    <h3>@guardrail.Title</h3>
+                    <p>@guardrail.Description</p>
+                </article>
+            }
+        </div>
+    </SectionCard>
+</div>

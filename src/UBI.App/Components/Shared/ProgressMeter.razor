@@ -1,0 +1,26 @@
+@{
+    var clampedPercent = Math.Clamp(Percent, 0, 100);
+    var widthStyle = $"width: {clampedPercent}%";
+}
+
+<div class="progress-meter">
+    <div class="progress-meter__labels">
+        <span>@Label</span>
+        <span>@clampedPercent%</span>
+    </div>
+    <div class="progress-meter__track">
+        <div class="progress-meter__fill tone-@Tone" style="@widthStyle"></div>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Caption))
+    {
+        <p class="progress-meter__caption">@Caption</p>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
+    [Parameter] public int Percent { get; set; }
+    [Parameter] public string Caption { get; set; } = string.Empty;
+    [Parameter] public string Tone { get; set; } = "green";
+}

@@ -1,0 +1,241 @@
+@page "/operations"
+@inject UbiDataService Data
+
+<PageTitle>Operations</PageTitle>
+
+<section class="page-header">
+    <div>
+        <p class="page-header__eyebrow">Operations workspace</p>
+        <h1>Run onboarding and support workflows</h1>
+        <p class="page-header__summary">
+            This is the first real product workflow surface: create employee records, update the company purpose statement,
+            and log support interventions against persisted application state.
+        </p>
+    </div>
+</section>
+
+@if (!string.IsNullOrWhiteSpace(_statusMessage))
+{
+    <div class="status-banner @(_isError ? "status-banner--error" : "status-banner--success")">@_statusMessage</div>
+}
+
+@{
+    var employees = Data.GetEmployees();
+    var interventions = Data.GetInterventions();
+}
+
+<div class="two-column-grid">
+    <SectionCard Title="Company purpose" Kicker="Mission control" Subtitle="Persisted company messaging that flows directly into the dashboards">
+        <EditForm Model="_purposeForm" OnValidSubmit="SavePurposeStatement" class="app-form">
+            <DataAnnotationsValidator />
+            <ValidationSummary class="validation-summary" />
+            <div class="form-grid">
+                <label class="form-field form-field--full">
+                    <span>Purpose statement</span>
+                    <InputTextArea @bind-Value="_purposeForm.PurposeStatement" class="app-input app-textarea" />
+                </label>
+            </div>
+            <button type="submit" class="app-button app-button--primary">Save purpose</button>
+        </EditForm>
+    </SectionCard>
+
+    <SectionCard Title="Employee onboarding" Kicker="Workflow 1" Subtitle="Create a persisted employee profile with estate and presence baselines">
+        <EditForm Model="_employeeForm" OnValidSubmit="CreateEmployee" class="app-form">
+            <DataAnnotationsValidator />
+            <ValidationSummary class="validation-summary" />
+            <div class="form-grid">
+                <label class="form-field">
+                    <span>Legal name</span>
+                    <InputText @bind-Value="_employeeForm.LegalName" class="app-input" />
+                </label>
+                <label class="form-field">
+                    <span>Email</span>
+                    <InputText @bind-Value="_employeeForm.Email" class="app-input" />
+                </label>
+                <label class="form-field">
+                    <span>Department</span>
+                    <InputText @bind-Value="_employeeForm.Department" class="app-input" />
+                </label>
+                <label class="form-field">
+                    <span>Role title</span>
+                    <InputText @bind-Value="_employeeForm.RoleTitle" class="app-input" />
+                </label>
+                <label class="form-field">
+                    <span>Hire date</span>
+                    <InputDate @bind-Value="_employeeForm.HireDate" class="app-input" />
+                </label>
+                <label class="form-field">
+                    <span>Annual UBI grant</span>
+                    <InputNumber @bind-Value="_employeeForm.UbiAnnualGrant" class="app-input" />
+                </label>
+                <label class="form-field">
+                    <span>Annual asset contribution</span>
+                    <InputNumber @bind-Value="_employeeForm.AssetContributionAnnual" class="app-input" />
+                </label>
+            </div>
+            <button type="submit" class="app-button app-button--primary">Add employee</button>
+        </EditForm>
+    </SectionCard>
+
+    <SectionCard Title="Support interventions" Kicker="Workflow 2" Subtitle="Record red and yellow flag follow-up work for leadership">
+        <EditForm Model="_interventionForm" OnValidSubmit="CreateIntervention" class="app-form">
+            <DataAnnotationsValidator />
+            <ValidationSummary class="validation-summary" />
+            <div class="form-grid">
+                <label class="form-field">
+                    <span>Employee</span>
+                    <InputSelect @bind-Value="_interventionForm.EmployeeId" class="app-input">
+                        @foreach (var employee in employees)
+                        {
+                            <option value="@employee.EmployeeId">@employee.LegalName (@employee.Department)</option>
+                        }
+                    </InputSelect>
+                </label>
+                <label class="form-field">
+                    <span>Owner</span>
+                    <InputText @bind-Value="_interventionForm.Owner" class="app-input" />
+                </label>
+                <label class="form-field">
+                    <span>Severity</span>
+                    <InputSelect @bind-Value="_interventionForm.Severity" class="app-input">
+                        <option value="BLUE">Blue</option>
+                        <option value="YELLOW">Yellow</option>
+                        <option value="RED">Red</option>
+                    </InputSelect>
+                </label>
+                <label class="form-field form-field--full">
+                    <span>Summary</span>
+                    <InputTextArea @bind-Value="_interventionForm.Summary" class="app-input app-textarea" />
+                </label>
+                <label class="form-field form-field--full">
+                    <span>Recommendation</span>
+                    <InputTextArea @bind-Value="_interventionForm.Recommendation" class="app-input app-textarea" />
+                </label>
+            </div>
+            <button type="submit" class="app-button app-button--primary">Log intervention</button>
+        </EditForm>
+    </SectionCard>
+
+    <SectionCard Title="Employee roster" Kicker="Live local data" Subtitle="Persisted records now powering the estate, presence, and leadership views">
+        <div class="record-list">
+            @foreach (var employee in employees)
+            {
+                <article class="record-card">
+                    <div>
+                        <h3>@employee.LegalName</h3>
+                        <p>@employee.RoleTitle · @employee.Department</p>
+                    </div>
+                    <div class="record-card__meta">
+                        <span>@employee.EmployeeId</span>
+                        <span>@employee.Estate.CurrentBalance.ToString("C0")</span>
+                        <span>@employee.Presence.AlignmentScore.ToString("0.00")</span>
+                    </div>
+                </article>
+            }
+        </div>
+    </SectionCard>
+
+    <SectionCard Title="Open interventions" Kicker="Leadership queue" Subtitle="Current support work saved to the application state store">
+        <div class="record-list">
+            @foreach (var intervention in interventions)
+            {
+                <article class="record-card">
+                    <div>
+                        <h3>@intervention.EmployeeName · @intervention.Severity</h3>
+                        <p>@intervention.Summary</p>
+                    </div>
+                    <div class="record-card__meta">
+                        <span>@intervention.Owner</span>
+                        <span>@intervention.Status</span>
+                        <span>@intervention.CreatedAtUtc.ToLocalTime().ToString("MMM dd")</span>
+                    </div>
+                </article>
+            }
+        </div>
+    </SectionCard>
+</div>
+
+@code {
+    private NewEmployeeRequest _employeeForm = new();
+    private NewInterventionRequest _interventionForm = new();
+    private UpdateCompanyPurposeRequest _purposeForm = new();
+    private string _statusMessage = string.Empty;
+    private bool _isError;
+
+    protected override void OnInitialized()
+    {
+        _purposeForm = new UpdateCompanyPurposeRequest
+        {
+            PurposeStatement = Data.Workspace.PurposeStatement
+        };
+
+        var firstEmployee = Data.GetEmployees().FirstOrDefault();
+        if (firstEmployee is not null)
+        {
+            _interventionForm.EmployeeId = firstEmployee.EmployeeId;
+        }
+    }
+
+    private void SavePurposeStatement()
+    {
+        try
+        {
+            Data.UpdatePurposeStatement(_purposeForm);
+            SetStatus("Purpose statement updated.");
+        }
+        catch (InvalidOperationException error)
+        {
+            SetError(error.Message);
+        }
+    }
+
+    private void CreateEmployee()
+    {
+        try
+        {
+            var employee = Data.AddEmployee(_employeeForm);
+            SetStatus($"Added {employee.LegalName} to the persisted roster.");
+            _employeeForm = new NewEmployeeRequest
+            {
+                Department = _employeeForm.Department
+            };
+            _interventionForm.EmployeeId = employee.EmployeeId;
+            _purposeForm.PurposeStatement = Data.Workspace.PurposeStatement;
+        }
+        catch (InvalidOperationException error)
+        {
+            SetError(error.Message);
+        }
+    }
+
+    private void CreateIntervention()
+    {
+        try
+        {
+            var intervention = Data.AddIntervention(_interventionForm);
+            SetStatus($"Logged intervention {intervention.InterventionId} for {intervention.EmployeeName}.");
+            _interventionForm = new NewInterventionRequest
+            {
+                Owner = intervention.Owner,
+                Severity = intervention.Severity,
+                EmployeeId = intervention.EmployeeId
+            };
+        }
+        catch (InvalidOperationException error)
+        {
+            SetError(error.Message);
+        }
+    }
+
+    private void SetStatus(string message)
+    {
+        _isError = false;
+        _statusMessage = message;
+    }
+
+    private void SetError(string message)
+    {
+        _isError = true;
+        _statusMessage = message;
+    }
+}

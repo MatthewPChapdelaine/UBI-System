@@ -1,0 +1,103 @@
+@page "/leadership"
+@inject UbiDataService Data
+
+<PageTitle>Leadership Dashboard</PageTitle>
+
+@{
+    var leadership = Data.Workspace.Leadership;
+    var overallHealthValue = $"{leadership.OverallHealth:0.00} / 1.00";
+    var riskDistributionValue = $"{leadership.GreenCount} G / {leadership.YellowCount} Y / {leadership.RedCount} R";
+    var averageTenureValue = $"{leadership.AvgTenureYears:0.0} years";
+    var recommendationRateValue = leadership.RecommendationRate.ToString("P0");
+}
+
+<section class="page-header">
+    <div>
+        <p class="page-header__eyebrow">Leadership dashboard</p>
+        <h1>Organizational presence index</h1>
+        <p class="page-header__summary">
+            Leadership gets early-warning visibility without losing the humanity and guardrails
+            described in the UBI system design.
+        </p>
+    </div>
+</section>
+
+<div class="metric-grid">
+    <MetricCard Eyebrow="Overall health" Value="@overallHealthValue" Trend="@leadership.HealthLabel" Tone="green" />
+    <MetricCard Eyebrow="Risk distribution" Value="@riskDistributionValue" Trend="Current employee mix" Tone="gold" />
+    <MetricCard Eyebrow="Average tenure" Value="@averageTenureValue" Trend="Retention context" Tone="blue" />
+    <MetricCard Eyebrow="Recommendation rate" Value="@recommendationRateValue" Trend="Employee advocacy" Tone="purple" />
+</div>
+
+<div class="two-column-grid">
+    <SectionCard Title="Flags requiring attention" Kicker="Interventions" Subtitle="High-signal watchlist derived from the spec's red and yellow examples">
+        <div class="flag-list">
+            @foreach (var flag in leadership.Flags)
+            {
+                <article class="flag-card tone-@flag.Tone">
+                    <div class="flag-card__header">
+                        <div>
+                            <h3>@flag.Name</h3>
+                            <p>@flag.Department</p>
+                        </div>
+                        <div class="flag-card__score">@flag.Score.ToString("0.00")</div>
+                    </div>
+
+                    <div class="flag-card__trend">Trend: @flag.Trend</div>
+                    <p>@flag.Notes</p>
+
+                    <div class="callout-card">
+                        <h4>Recommended action</h4>
+                        <p>@flag.Recommendation</p>
+                    </div>
+                </article>
+            }
+        </div>
+    </SectionCard>
+
+    <SectionCard Title="Department breakdown" Kicker="Bench strength" Subtitle="A comparative health view across functional groups">
+        <div class="department-list">
+            @foreach (var department in leadership.DepartmentScores)
+            {
+                var departmentCaption = department.Score.ToString("0.00");
+
+                <div class="score-breakdown-row">
+                    <div>
+                        <h3>@department.Department</h3>
+                        <p>@department.Employees employees</p>
+                    </div>
+                    <ProgressMeter Label="Health" Percent="@ToPercent(department.Score)" Caption="@departmentCaption" Tone="green" />
+                </div>
+            }
+        </div>
+    </SectionCard>
+
+    <SectionCard Title="Company health metrics" Kicker="Executive summary" Subtitle="Short, scan-friendly metrics for recurring review">
+        <div class="health-metric-grid">
+            @foreach (var metric in leadership.HealthMetrics)
+            {
+                <article class="metric-note-card">
+                    <p class="metric-note-card__label">@metric.Label</p>
+                    <h3>@metric.Value</h3>
+                    <p>@metric.Note</p>
+                </article>
+            }
+        </div>
+    </SectionCard>
+
+    <SectionCard Title="Intervention playbook" Kicker="Response model" Subtitle="The app can evolve these into workflows, tasks, and case management later">
+        <div class="playbook-list">
+            @foreach (var action in leadership.InterventionPlaybook)
+            {
+                <article class="playbook-item">
+                    <h3>@action.Title</h3>
+                    <p>@action.Description</p>
+                </article>
+            }
+        </div>
+    </SectionCard>
+</div>
+
+@code {
+    private static int ToPercent(double score) => (int)Math.Round(score * 100);
+}

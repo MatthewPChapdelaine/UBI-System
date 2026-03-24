@@ -1,0 +1,82 @@
+@page "/presence"
+@inject UbiDataService Data
+
+<PageTitle>Presence Dashboard</PageTitle>
+
+@{
+    var presence = Data.Workspace.Presence;
+    var alignmentValue = $"{presence.AlignmentScore:0.00} / 1.00";
+    var reviewCadenceValue = $"{presence.ReviewCadenceDays} days";
+}
+
+<section class="page-header">
+    <div>
+        <p class="page-header__eyebrow">Presence dashboard</p>
+        <h1>Your presence state, @presence.EmployeeName</h1>
+        <p class="page-header__summary">@presence.Summary</p>
+    </div>
+</section>
+
+<div class="metric-grid">
+    <MetricCard Eyebrow="Alignment score" Value="@alignmentValue" Trend="@presence.StatusLabel" Tone="@presence.StatusTone" />
+    <MetricCard Eyebrow="Review cadence" Value="@reviewCadenceValue" Trend="Quarterly check-in" Tone="blue" />
+    <MetricCard Eyebrow="Trend" Value="Stable" Trend="6-month picture" Description="The current signal set is healthy with a slight upward slope." Tone="green" />
+    <MetricCard Eyebrow="Support posture" Value="Preventive" Trend="Human-first" Description="The UI is optimized to encourage support before coercion." Tone="gold" />
+</div>
+
+<div class="two-column-grid">
+    <SectionCard Title="Current alignment" Kicker="Health band" Subtitle="A single score should be explainable, not mysterious">
+        <ProgressMeter Label="Composite presence score" Percent="@ToPercent(presence.AlignmentScore)" Caption="@presence.Summary" Tone="@presence.StatusTone" />
+    </SectionCard>
+
+    <SectionCard Title="Component breakdown" Kicker="Last 90 days" Subtitle="Every contributing signal remains visible to the employee">
+        <div class="score-breakdown-list">
+            @foreach (var item in presence.Breakdown)
+            {
+                <div class="score-breakdown-row">
+                    <div>
+                        <h3>@item.Label</h3>
+                        <p>@item.Note</p>
+                    </div>
+                    <ProgressMeter Label="Score" Percent="@ToPercent(item.Score)" Tone="blue" />
+                </div>
+            }
+        </div>
+    </SectionCard>
+
+    <SectionCard Title="Trend analysis" Kicker="Six-month view" Subtitle="A compact visual rhythm for change over time">
+        <div class="trend-list">
+            @foreach (var point in presence.Trend)
+            {
+                <div class="trend-row">
+                    <div class="trend-row__label">
+                        <strong>@point.Label</strong>
+                        <span>@point.Note</span>
+                    </div>
+                    <div class="trend-bar">
+                        <div class="trend-bar__fill" style="@TrendWidth(point.Score)"></div>
+                    </div>
+                    <div class="trend-row__score">@point.Score.ToString("0.00")</div>
+                </div>
+            }
+        </div>
+    </SectionCard>
+
+    <SectionCard Title="Friction points" Kicker="Support view" Subtitle="The system should make it obvious when help is needed and when things are healthy">
+        <div class="friction-grid">
+            @foreach (var point in presence.FrictionPoints)
+            {
+                <article class="info-tile tone-@point.Tone">
+                    <h3>@point.Title</h3>
+                    <p>@point.Description</p>
+                </article>
+            }
+        </div>
+    </SectionCard>
+</div>
+
+@code {
+    private static int ToPercent(double score) => (int)Math.Round(score * 100);
+
+    private static string TrendWidth(double score) => $"width: {ToPercent(score)}%";
+}

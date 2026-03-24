@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.matthew.UBISystem</id>
+  <name>UBI System</name>
+  <summary>Managed UBI dashboards for employee estates, presence, and leadership visibility</summary>
+  <developer id="com.matthew">
+    <name>Matthew</name>
+  </developer>
+  <metadata_license>MIT</metadata_license>
+  <project_license>LicenseRef-proprietary</project_license>
+  <url type="homepage">https://github.com/MatthewPChapdelaine/UBI-System</url>
+  <description>
+    <p>
+      UBI System provides a solidly designed GUI for the Managed UBI software,
+      covering estate transparency, employee presence dashboards, and organizational
+      health oversight.
+    </p>
+    <p>
+      This Flatpak package launches the self-contained web application locally and
+      hosts it inside a native GTK and WebKit window.
+    </p>
+  </description>
+  <launchable type="desktop-id">com.matthew.UBISystem.desktop</launchable>
+  <provides>
+    <binary>ubi-native-host</binary>
+  </provides>
+  <releases>
+    <release version="0.1.0" date="2026-03-24">
+      <description>
+        <p>First packaged desktop release of the Managed UBI software.</p>
+        <ul>
+          <li>Blazor GUI with overview, estate, presence, leadership, and operations workflows.</li>
+          <li>Native GTK and WebKit Flatpak host window instead of external browser launch.</li>
+          <li>Local JSON-backed persistence and HTTP APIs for company, employee, and intervention data.</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-cartoon">none</content_attribute>
+    <content_attribute id="violence-fantasy">none</content_attribute>
+    <content_attribute id="drugs-alcohol">none</content_attribute>
+    <content_attribute id="sex-nudity">none</content_attribute>
+    <content_attribute id="language-profanity">none</content_attribute>
+    <content_attribute id="money-purchasing">none</content_attribute>
+    <content_attribute id="social-chat">none</content_attribute>
+    <content_attribute id="social-info">none</content_attribute>
+  </content_rating>
+  <keywords>
+    <keyword>ubi</keyword>
+    <keyword>estate</keyword>
+    <keyword>leadership</keyword>
+    <keyword>presence</keyword>
+    <keyword>dashboard</keyword>
+  </keywords>
+  <categories>
+    <category>Office</category>
+    <category>Finance</category>
+  </categories>
+</component>

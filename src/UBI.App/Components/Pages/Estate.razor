@@ -1,0 +1,90 @@
+@page "/estate"
+@inject UbiDataService Data
+
+<PageTitle>Employee Estate</PageTitle>
+
+@{
+    var estate = Data.Workspace.Estate;
+    var currentBalanceValue = estate.CurrentBalance.ToString("C2");
+    var currentBalanceTrend = $"Up {estate.MonthlyChange:C0} this month";
+    var passiveIncomeValue = $"{estate.PassiveIncomeMonthly:C0}/mo";
+    var outrightOwnershipValue = estate.CurrentOutrightOwnership.ToString("C0");
+    var monthsRemainingValue = estate.CliffMonthsRemaining.ToString();
+    var vestingCaption = $"{estate.CliffMonthsRemaining} months remaining until full cliff vesting";
+}
+
+<section class="page-header">
+    <div>
+        <p class="page-header__eyebrow">Employee estate viewer</p>
+        <h1>Your managed estate, @estate.EmployeeName</h1>
+        <p class="page-header__summary">
+            A real product version of the wealth-transparency panel from the design doc:
+            current balance, allocation mix, vesting progress, and future ownership story.
+        </p>
+    </div>
+</section>
+
+<div class="metric-grid">
+    <MetricCard Eyebrow="Current balance" Value="@currentBalanceValue" Trend="@currentBalanceTrend" Tone="green" />
+    <MetricCard Eyebrow="Passive income at 10 years" Value="@passiveIncomeValue" Trend="Projection target" Tone="blue" />
+    <MetricCard Eyebrow="Outright ownership at cliff" Value="@outrightOwnershipValue" Trend="2-year milestone" Tone="gold" />
+    <MetricCard Eyebrow="Months remaining" Value="@monthsRemainingValue" Trend="Until cliff vesting event" Tone="purple" />
+</div>
+
+<div class="two-column-grid">
+    <SectionCard Title="Asset composition" Kicker="Allocation" Subtitle="Transparent managed estate mix">
+        <div class="allocation-list">
+            @foreach (var asset in estate.AssetComposition)
+            {
+                var assetCaption = $"{asset.Percent}% of estate";
+
+                <div class="allocation-row">
+                    <div>
+                        <h3>@asset.Label</h3>
+                        <p>@asset.Amount.ToString("C0")</p>
+                    </div>
+                    <ProgressMeter Label="Allocation" Percent="@asset.Percent" Caption="@assetCaption" Tone="@asset.Tone" />
+                </div>
+            }
+        </div>
+    </SectionCard>
+
+    <SectionCard Title="Vesting status" Kicker="Ownership path" Subtitle="The GUI should always explain what becomes fully owned and when">
+        <ProgressMeter Label="Cliff 2-year milestone" Percent="@estate.VestingPercent" Caption="@vestingCaption" Tone="green" />
+        <div class="callout-card">
+            <h3>What happens at the milestone?</h3>
+            <p>
+                When the 2-year cliff is reached, the employee owns
+                <strong>@estate.CurrentOutrightOwnership.ToString("C0")</strong> outright and keeps clear visibility into future growth.
+            </p>
+        </div>
+    </SectionCard>
+
+    <SectionCard Title="Projection story" Kicker="Future state" Subtitle="Long-term value translated into understandable milestones">
+        <div class="projection-grid">
+            @foreach (var projection in estate.Projections)
+            {
+                <article class="projection-card">
+                    <p class="projection-card__label">@projection.Label</p>
+                    <h3>@projection.Amount.ToString("C0")</h3>
+                    <p>@projection.Note</p>
+                </article>
+            }
+        </div>
+    </SectionCard>
+
+    <SectionCard Title="This month's transactions" Kicker="Ledger" Subtitle="Recent financial events should be legible without opening a back-office tool">
+        <div class="ledger-list">
+            @foreach (var transaction in estate.Transactions)
+            {
+                <article class="ledger-row tone-@transaction.Tone">
+                    <div>
+                        <p class="ledger-row__date">@transaction.DateLabel</p>
+                        <h3>@transaction.Description</h3>
+                    </div>
+                    <div class="ledger-row__amount">+@transaction.Amount.ToString("C0")</div>
+                </article>
+            }
+        </div>
+    </SectionCard>
+</div>

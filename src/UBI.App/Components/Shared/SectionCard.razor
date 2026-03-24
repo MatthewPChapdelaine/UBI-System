@@ -1,0 +1,35 @@
+<section class="section-card">
+    <div class="section-card__header">
+        <div>
+            @if (!string.IsNullOrWhiteSpace(Kicker))
+            {
+                <p class="section-card__kicker">@Kicker</p>
+            }
+
+            <h2>@Title</h2>
+
+            @if (!string.IsNullOrWhiteSpace(Subtitle))
+            {
+                <p class="section-card__subtitle">@Subtitle</p>
+            }
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(ActionHref) && !string.IsNullOrWhiteSpace(ActionLabel))
+        {
+            <a class="section-card__action" href="@ActionHref">@ActionLabel</a>
+        }
+    </div>
+
+    <div class="section-card__body">
+        @ChildContent
+    </div>
+</section>
+
+@code {
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public string Kicker { get; set; } = string.Empty;
+    [Parameter] public string Subtitle { get; set; } = string.Empty;
+    [Parameter] public string ActionLabel { get; set; } = string.Empty;
+    [Parameter] public string ActionHref { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public RenderFragment? ChildContent { get; set; }
+}
