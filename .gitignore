@@ -5,3 +5,8 @@ packaging/flatpak/publish/
 packaging/flatpak/__pycache__/
 packaging/flatpak/screenshots/*.log
 release/
+packaging/flathub/build-dir/
+packaging/flathub/repo/
+packaging/flathub/.flatpak-builder/
+packaging/flathub/build-dir/
+packaging/flathub/repo/

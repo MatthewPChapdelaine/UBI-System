@@ -13,7 +13,8 @@ UBI System is a .NET 8 Blazor desktop-oriented application for managed UBI opera
 ## Project layout
 
 - `src/UBI.App/` - Blazor application and local API
-- `packaging/flatpak/` - Flatpak manifest, desktop metadata, host shell, and screenshots
+- `packaging/flatpak/` - Existing local-build Flatpak manifest, desktop metadata, host shell, and screenshots
+- `packaging/flathub/` - Flathub-oriented source-build Flatpak manifest and metadata
 - `Managed_UBI_System_Design.md` - system design reference
 - `Managed_UBI_Implementation_Roadmap.md` - roadmap reference
 
@@ -37,7 +38,12 @@ The app serves the dashboard locally and persists workflow data under `src/UBI.A
 
 ## Flatpak packaging
 
-Build the publish payload and Flatpak bundle inputs:
+The repository now contains two Flatpak packaging tracks:
+
+- `packaging/flatpak/` keeps the original local-build workflow that installs a pre-published payload from `packaging/flatpak/publish/`.
+- `packaging/flathub/` contains a Flathub-oriented source-build manifest using the Flathub-compatible app ID `io.github.matthewpchapdelaine.ubi-system`.
+
+Build the publish payload and Flatpak bundle inputs for the local packaging flow:
 
 ```bash
 ./packaging/flatpak/build-flatpak.sh
@@ -55,6 +61,21 @@ Build the Flatpak locally:
 flatpak-builder --user --force-clean flatpak-build packaging/flatpak/com.matthew.UBISystem.yaml
 flatpak-builder --user --install --force-clean flatpak-build packaging/flatpak/com.matthew.UBISystem.yaml
 ```
+
+Validate the Flathub-oriented metadata:
+
+```bash
+appstreamcli validate packaging/flathub/io.github.matthewpchapdelaine.ubi-system.metainfo.xml
+desktop-file-validate packaging/flathub/io.github.matthewpchapdelaine.ubi-system.desktop
+```
+
+Build the Flathub-oriented manifest locally:
+
+```bash
+./packaging/flathub/build-flathub.sh
+```
+
+When preparing the actual Flathub submission, move the manifest and adjacent files from `packaging/flathub/` into the top level of the Flathub submission repository, because Flathub requires the final submission manifest to live at repository root.
 
 ## Release assets
 

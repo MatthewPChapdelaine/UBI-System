@@ -1,0 +1,57 @@
+id: io.github.matthewpchapdelaine.ubi-system
+runtime: org.gnome.Platform
+runtime-version: "49"
+sdk: org.gnome.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.dotnet8
+build-options:
+  append-path: /usr/lib/sdk/dotnet8/bin
+  append-ld-library-path: /usr/lib/sdk/dotnet8/lib
+  prepend-pkg-config-path: /usr/lib/sdk/dotnet8/lib/pkgconfig
+  env:
+    DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+    DOTNET_GENERATE_ASPNET_CERTIFICATE: "false"
+    DOTNET_NOLOGO: "true"
+    DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "1"
+command: ubi-native-host
+finish-args:
+  - --device=dri
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --env=DOTNET_ROOT=/app/lib/dotnet
+modules:
+  - name: dotnet-runtime
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/dotnet8/bin/install.sh
+
+  - name: ubi-system
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/dotnet8/bin/dotnet restore src/UBI.App/UBI.App.csproj --configfile NuGet.Config --source /usr/lib/sdk/dotnet8/nuget/packages
+      - /usr/lib/sdk/dotnet8/bin/dotnet publish src/UBI.App/UBI.App.csproj -c Release --no-restore --configfile NuGet.Config --source /usr/lib/sdk/dotnet8/nuget/packages -o publish --no-self-contained
+      - install -d /app/bin /app/share/ubi-app /app/share/applications /app/share/metainfo /app/share/icons/hicolor/scalable/apps /app/share/licenses/${FLATPAK_ID}/ubi-system
+      - cp -a publish/. /app/share/ubi-app/
+      - install -Dm755 ubi-native-host.py /app/bin/ubi-native-host
+      - install -Dm644 io.github.matthewpchapdelaine.ubi-system.desktop /app/share/applications/io.github.matthewpchapdelaine.ubi-system.desktop
+      - install -Dm644 io.github.matthewpchapdelaine.ubi-system.metainfo.xml /app/share/metainfo/io.github.matthewpchapdelaine.ubi-system.metainfo.xml
+      - install -Dm644 io.github.matthewpchapdelaine.ubi-system.svg /app/share/icons/hicolor/scalable/apps/io.github.matthewpchapdelaine.ubi-system.svg
+      - install -Dm644 LICENSE /app/share/licenses/${FLATPAK_ID}/ubi-system/LICENSE
+    sources:
+      - type: archive
+        url: https://github.com/MatthewPChapdelaine/UBI-System/archive/refs/tags/v0.1.0.tar.gz
+        sha256: 6f20bf9e7f454a254fff993c06dfe6db03389e57afd52fb236819f55ad3924f2
+        strip-components: 1
+      - type: file
+        path: ../../LICENSE
+      - type: file
+        path: NuGet.Config
+      - type: file
+        path: ubi-native-host.py
+      - type: file
+        path: io.github.matthewpchapdelaine.ubi-system.desktop
+      - type: file
+        path: io.github.matthewpchapdelaine.ubi-system.metainfo.xml
+      - type: file
+        path: io.github.matthewpchapdelaine.ubi-system.svg

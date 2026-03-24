@@ -1,8 +1,8 @@
 [Desktop Entry]
 Name=UBI System
-Comment=Managed UBI dashboards for estate transparency, presence, and leadership oversight
+Comment=Local-first managed UBI dashboards for estates, presence, and operations
 Exec=ubi-native-host
-Icon=com.matthew.UBISystem
+Icon=io.github.matthewpchapdelaine.ubi-system
 Terminal=false
 Type=Application
 Categories=Office;ProjectManagement;
