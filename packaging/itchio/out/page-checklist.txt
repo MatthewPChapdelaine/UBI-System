@@ -1,0 +1,13 @@
+Page URL: https://mindblade16.itch.io/ubi-software
+Title: UBI Software
+Classification: Tool
+Kind: Downloadable
+Short description: A Linux desktop dashboard for exploring managed UBI operations, organizational workflows, and intervention tracking.
+Tags: simulation, tool, dashboard, management, blazor, opensource, civic-tech, prototype
+
+Browser checklist:
+- Set the page title to UBI Software and classification to Tool.
+- Paste the short description and generated markdown body into the page editor.
+- Attach the linux upload as the main downloadable file.
+- Apply the recommended tags.
+- Add the existing dashboard screenshots from packaging/flatpak/screenshots to the gallery.
