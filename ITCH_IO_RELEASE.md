@@ -157,3 +157,19 @@ Do not position this as a premium enterprise product on `itch.io`; the platform 
 ## Recommended launch sentence
 
 `UBI System is a Linux desktop prototype for exploring managed UBI operations through dashboards, local workflows, and interactive system views.`
+
+## Upload automation
+
+The repository includes `packaging/itchio/publish.sh` for repeatable `itch.io` Linux uploads.
+
+Examples:
+
+```bash
+ITCH_IO_USER=yourname ITCH_IO_PROJECT=ubi-system \
+  ./packaging/itchio/publish.sh --dry-run
+
+ITCH_IO_USER=yourname ITCH_IO_PROJECT=ubi-system \
+  ./packaging/itchio/publish.sh
+```
+
+This stages the existing publish payload, adds a local launcher script, and then pushes the result to the configured `itch.io` channel through `butler`.

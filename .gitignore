@@ -10,3 +10,4 @@ packaging/flathub/repo/
 packaging/flathub/.flatpak-builder/
 packaging/flathub/build-dir/
 packaging/flathub/repo/
+packaging/itchio/out/

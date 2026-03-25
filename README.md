@@ -80,3 +80,29 @@ When preparing the actual Flathub submission, move the manifest and adjacent fil
 ## Release assets
 
 Screenshots captured from the native Flatpak shell are stored in `packaging/flatpak/screenshots/`.
+
+## Itch.io upload automation
+
+Use `packaging/itchio/publish.sh` to publish the Linux upload for an existing `itch.io` project through `butler`.
+
+Required environment variables:
+
+- `ITCH_IO_USER` - your `itch.io` account name
+- `ITCH_IO_PROJECT` - the existing `itch.io` project slug
+
+Optional environment variables:
+
+- `ITCH_IO_CHANNEL` - overrides the default `linux` channel
+- `BUTLER_API_KEY` - used by `butler` if you prefer token-based auth
+
+Examples:
+
+```bash
+ITCH_IO_USER=yourname ITCH_IO_PROJECT=ubi-system \
+  ./packaging/itchio/publish.sh --dry-run
+
+ITCH_IO_USER=yourname ITCH_IO_PROJECT=ubi-system \
+  ./packaging/itchio/publish.sh
+```
+
+The script reuses the existing Flatpak publish payload build, stages a launcher script for local use, and then pushes the staged directory with `butler`.
