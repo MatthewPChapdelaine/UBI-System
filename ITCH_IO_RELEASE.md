@@ -160,7 +160,10 @@ Do not position this as a premium enterprise product on `itch.io`; the platform 
 
 ## Upload automation
 
-The repository includes `packaging/itchio/publish.sh` for repeatable `itch.io` Linux uploads.
+The repository includes:
+
+- `packaging/itchio/publish.sh` for repeatable `itch.io` Linux uploads
+- `packaging/itchio/generate-page.py` for generating page-ready store copy and metadata files
 
 Examples:
 
@@ -173,3 +176,9 @@ ITCH_IO_USER=yourname ITCH_IO_PROJECT=ubi-system \
 ```
 
 This stages the existing publish payload, adds a local launcher script, and then pushes the result to the configured `itch.io` channel through `butler`.
+
+Generate page files with:
+
+```bash
+./packaging/itchio/generate-page.py
+```

@@ -1,0 +1,79 @@
+{
+  "title": "UBI Software",
+  "url": "https://mindblade16.itch.io/ubi-software",
+  "classification": "Tool",
+  "kind": "Downloadable",
+  "short_description": "A Linux desktop dashboard for exploring managed UBI operations, organizational workflows, and intervention tracking.",
+  "tags": [
+    "simulation",
+    "tool",
+    "dashboard",
+    "management",
+    "blazor",
+    "opensource",
+    "civic-tech",
+    "prototype"
+  ],
+  "channels": [
+    {
+      "name": "linux",
+      "platform": "Linux",
+      "recommended_launch": "Downloadable build"
+    }
+  ],
+  "body_sections": [
+    {
+      "heading": "About this project",
+      "paragraphs": [
+        "UBI Software is a desktop-oriented application for exploring how a managed UBI platform might look and behave as real software.",
+        "Instead of presenting the idea as a design document alone, the project turns it into an interactive application with local persistence, workflow screens, operational dashboards, and native Linux packaging.",
+        "The current itch.io upload targets the Linux channel for users who want to inspect the working prototype locally."
+      ]
+    },
+    {
+      "heading": "Included in the current build",
+      "bullets": [
+        "Overview, estate, presence, leadership, and operations screens",
+        "Local JSON-backed persistence for company, employee, and intervention data",
+        "Local API endpoints for company, workspace, employee, and intervention workflows",
+        "Native Linux packaging with a launcher script for the itch.io build",
+        "Existing screenshot assets suitable for the page gallery"
+      ]
+    },
+    {
+      "heading": "Who it is for",
+      "bullets": [
+        "Interface and systems designers",
+        "Policy-tech and civic-tech experimenters",
+        "Educators demonstrating operational dashboard concepts",
+        "Developers interested in Blazor-based desktop tooling"
+      ]
+    },
+    {
+      "heading": "Why this stands out",
+      "paragraphs": [
+        "UBI Software is not just a whitepaper or static mockup. It is a functioning local application with data flow, screens, persistence, and packaging work already in place.",
+        "That makes it a better fit for people who want to inspect an implementation direction, interact with a working interface, and evaluate the operational framing as software."
+      ]
+    },
+    {
+      "heading": "Scope note",
+      "paragraphs": [
+        "This is best presented as a prototype or simulation environment, not as a real financial product or production deployment system."
+      ]
+    },
+    {
+      "heading": "AI disclosure",
+      "paragraphs": [
+        "UBI Software is a working desktop software prototype developed through direct implementation and iteration. Any AI-assisted work supported development tasks but does not replace the authored application logic, workflows, or packaging."
+      ]
+    }
+  ],
+  "browser_checklist": [
+    "Set the page title to UBI Software and classification to Tool.",
+    "Paste the short description and generated markdown body into the page editor.",
+    "Attach the linux upload as the main downloadable file.",
+    "Apply the recommended tags.",
+    "Add the existing dashboard screenshots from packaging/flatpak/screenshots to the gallery."
+  ]
+}

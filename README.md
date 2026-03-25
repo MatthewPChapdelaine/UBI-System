@@ -98,6 +98,8 @@ Optional environment variables:
 Examples:
 
 ```bash
+./packaging/itchio/generate-page.py
+
 ITCH_IO_USER=yourname ITCH_IO_PROJECT=ubi-system \
   ./packaging/itchio/publish.sh --dry-run
 
@@ -106,3 +108,5 @@ ITCH_IO_USER=yourname ITCH_IO_PROJECT=ubi-system \
 ```
 
 The script reuses the existing Flatpak publish payload build, stages a launcher script for local use, and then pushes the staged directory with `butler`.
+
+`generate-page.py` writes a page-ready markdown description, metadata summary, and browser checklist to `packaging/itchio/out/`.
